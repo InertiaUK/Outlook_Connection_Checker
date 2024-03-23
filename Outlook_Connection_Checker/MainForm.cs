@@ -63,7 +63,7 @@ namespace Outlook_Connection_Checker
                     else
                     {
                         //  Debug.WriteLine("Outlook is connected to Microsoft 365.");
-                        //we dont need to do anything if outlook is connected fine
+                        //we don't need to do anything if outlook is connected fine
                         //MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Check if there are 5 or more items in the Outbox
