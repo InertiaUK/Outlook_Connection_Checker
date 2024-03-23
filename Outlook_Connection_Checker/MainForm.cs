@@ -39,16 +39,30 @@ namespace Outlook_Connection_Checker
                 
                         ShowDisconnectedWarning("Outlook is working offline.\n\nYou will not be receiving new emails\n\nOutbound mails will stay in your outbox and not send.\n\nPlease check!");
                     }
-                    else if (IsConnectedToM365(outlookApp))
+                    else if (IsOfflineFromCachedExchange(outlookApp))
                     {
-                      //  Debug.WriteLine("Outlook is connected to Microsoft 365.");
-                      //we dont need to do anythign if outlook is connected fine
-                        //MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Debug.WriteLine("Outlook is working offline.");
+
+                        ShowDisconnectedWarning("Outlook is working offline.\n\nYou will not be receiving new emails\n\nOutbound mails will stay in your outbox and not send.\n\nPlease check!");
+
+                    }
+                    else if (IsDisconnectedFromExchange(outlookApp))
+                    {
+                        // Debug.WriteLine("Outlook is not connected to Microsoft 365.");
+                        ShowDisconnectedWarning("Outlook is not connected to Microsoft 365 Servers. \n\nYou may not be receiving new emails\n\nSent emails may stay in your outbox and not send.\n\nPlease check!");
+
+                    }
+                    else if (IsDisconnectedFromCachedExchange(outlookApp))
+                    {
+                        // Debug.WriteLine("Outlook is not connected to Microsoft 365.");
+                        ShowDisconnectedWarning("Outlook is not connected to Microsoft 365 Servers. \n\nYou may not be receiving new emails\n\nSent emails may stay in your outbox and not send.\n\nPlease check!");
+
                     }
                     else
                     {
-                       // Debug.WriteLine("Outlook is not connected to Microsoft 365.");
-                        ShowDisconnectedWarning("Outlook is not connected to Microsoft 365 Servers. \n\nYou may not be receiving new emails\n\nSent emails may stay in your outbox and not send.\n\nPlease check!");
+                        //  Debug.WriteLine("Outlook is connected to Microsoft 365.");
+                        //we dont need to do anythign if outlook is connected fine
+                        //MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 catch (COMException ex)
@@ -83,12 +97,26 @@ namespace Outlook_Connection_Checker
             return isRunning;
         }
 
-        private bool IsConnectedToM365(OutlookApp outlookApp) // Use the alias here
+   
+        
+        private bool IsDisconnectedFromExchange(OutlookApp outlookApp)
         {
-            Stores stores = outlookApp.Session.Stores;
-            foreach (Store store in stores)
+            Accounts accounts = outlookApp.Session.Accounts;
+            foreach (Account account in accounts)
             {
-                if (store.ExchangeStoreType == OlExchangeStoreType.olExchangeMailbox)
+                if (account.ExchangeConnectionMode == OlExchangeConnectionMode.olDisconnected)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool IsDisconnectedFromCachedExchange(OutlookApp outlookApp)
+        {
+            Accounts accounts = outlookApp.Session.Accounts;
+            foreach (Account account in accounts)
+            {
+                if (account.ExchangeConnectionMode == OlExchangeConnectionMode.olCachedDisconnected)
                 {
                     return true;
                 }
@@ -96,6 +124,18 @@ namespace Outlook_Connection_Checker
             return false;
         }
 
+        private bool IsOfflineFromCachedExchange(OutlookApp outlookApp)
+        {
+            Accounts accounts = outlookApp.Session.Accounts;
+            foreach (Account account in accounts)
+            {
+                if (account.ExchangeConnectionMode == OlExchangeConnectionMode.olCachedOffline)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         private void ShowDisconnectedWarning(string message)
         {
             //Debug.WriteLine(message);
