@@ -4,7 +4,7 @@ v1.0.0 - Initial Release
 
 v1.0.1 - Fixes to check methods to make it work in cached and none cached mode.
 
-v1.0.2 - Added 'Clogged outbox" check
+v1.0.2 - Added 'Clogged outbox' check
 
 The Problem
 ------------
