@@ -24,7 +24,7 @@ Another feature I have added since is that from v1.0.2 it will count the message
 Usage
 -----
 Deploy .net framework 4.8 and depoly the windwos binaries to a folder on the users machine or the RDS farm.
-Create a scheduled task running Outlook_Connection_Checker.exe as the user from Login of the user repeating every X minutes (5, 15, 60, whatever works best for you, I use 15, dotn recommend less than 5) for the lengh of a working day or more.
+Create a scheduled task running Outlook_Connection_Checker.exe as the user from Login of the user repeating every X minutes (5, 15, 60, whatever works best for you, I use 15, don't recommend less than 5) for the lengh of a working day or more.
 All of this can easily be automated via Group Policy, or Intune/Endpoint Manager or be done manually if you just want to setup for 1 or 2 users.
 
 Have peace of mind that if your users are not connected to their email service they will know about it in a reasonable time.  
