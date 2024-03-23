@@ -19,7 +19,7 @@ A Simple .net 4.8 executbale which upon running checks if Outlook is running for
 If so it checks if Outlook is working in offline mode, or has connectivity problems to M365 (or your own EWS service).
 It gives the user a meaningfull messagebox as well as a toast notification then exits.
 The user can remediate, or knows to contact their helpdesk.  
-Another feature I have added since is that from v1.0.2 it will count the messages in the outbox.  If there are 5 messages or more it will wait 4 minutes then count them again.  If stil 5 or more it will warn the user.
+Another feature I have added since is that from v1.0.2 it will count the messages in the outbox.  If there are 5 messages or more it will wait 4 minutes then count them again.  If still 5 or more it will warn the user.
 
 Usage
 -----
