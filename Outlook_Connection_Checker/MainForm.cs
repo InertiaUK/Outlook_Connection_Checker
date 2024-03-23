@@ -58,11 +58,33 @@ namespace Outlook_Connection_Checker
                         ShowDisconnectedWarning("Outlook is not connected to Microsoft 365 Servers. \n\nYou may not be receiving new emails\n\nSent emails may stay in your outbox and not send.\n\nPlease check!");
 
                     }
+                
+
                     else
                     {
                         //  Debug.WriteLine("Outlook is connected to Microsoft 365.");
-                        //we dont need to do anythign if outlook is connected fine
+                        //we dont need to do anything if outlook is connected fine
                         //MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Check if there are 5 or more items in the Outbox
+                        int outboxItemCount = GetOutboxItemCount(outlookApp);
+                        if (outboxItemCount >= 5)
+                        {
+                            // Set up a timer to check the Outbox again after 4 minutes
+                            Timer timer = new Timer();
+                            timer.Interval = 240000; // 4 minutes
+                            timer.Tick += (sender, e) =>
+                            {
+                                int secondCheckItemCount = GetOutboxItemCount(outlookApp);
+                                if (secondCheckItemCount >= 5)
+                                {
+                                    // Show warning about too many items in the Outbox after 2 minutes
+                                    ShowDisconnectedWarning($"There are  {secondCheckItemCount} items stuck in your Outbox after 4+ minutes. \n\nOutlook may be having problems sending messages.");
+                                }
+                                timer.Stop(); // Stop the timer after the second check
+                            };
+                            timer.Start(); // Start the timer
+                        }
                     }
                 }
                 catch (COMException ex)
@@ -79,8 +101,10 @@ namespace Outlook_Connection_Checker
             else
             {
                // Debug.WriteLine("Outlook is not running.");
-               //We dotn need to check if outlook is not running
+               //We dont need to check if outlook is not running
                // ShowDisconnectedWarning("Outlook is not running.");
+
+
             }
 
             // Close the application after displaying messages
@@ -136,6 +160,12 @@ namespace Outlook_Connection_Checker
             }
             return false;
         }
+        private int GetOutboxItemCount(OutlookApp outlookApp)
+        {
+            MAPIFolder outbox = outlookApp.Session.GetDefaultFolder(OlDefaultFolders.olFolderOutbox);
+            return outbox.Items.Count;
+        }
+
         private void ShowDisconnectedWarning(string message)
         {
             //Debug.WriteLine(message);
