@@ -6,7 +6,7 @@ v1.0.1 - Fixes to check methods to make it work in cached and none cached mode.
 
 v1.0.2 - Added 'Clogged outbox" check
 
-The Problen:
+The Problem:
 ------------
 Outlook is not good at reporting to the user if they are working offline due to either offline mode, or connectivity issues.
 Outlook only warns the user by changing its status bar and placing a warning sign on the icon, which can go ignored.
