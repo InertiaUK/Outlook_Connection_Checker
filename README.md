@@ -32,5 +32,5 @@ Have peace of mind that if your users are not connected to their email service t
 To Do
 -----
 
-Create a config file so that features can be enabled/disabled, and time between outbox check can be configured. 
+Create a config file so that features can be enabled/disabled, and time between outbox check and threshold can be configured. 
 Encorporate the age of the messages in the outbox to the check, rather than the number of messages.  
