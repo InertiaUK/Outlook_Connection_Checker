@@ -33,4 +33,4 @@ To Do
 -----
 
 Create a config file so that features can be enabled/disabled, and time between outbox check can be configured. 
-Encorporate the age of the messages in the outbox to the cehck, rather than the number.  
+Encorporate the age of the messages in the outbox to the check, rather than the number of messages.  
