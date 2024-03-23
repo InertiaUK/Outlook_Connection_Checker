@@ -6,14 +6,14 @@ v1.0.1 - Fixes to check methods to make it work in cached and none cached mode.
 
 v1.0.2 - Added 'Clogged outbox" check
 
-The Problem:
+The Problem
 ------------
 Outlook is not good at reporting to the user if they are working offline due to either offline mode, or connectivity issues.
 Outlook only warns the user by changing its status bar and placing a warning sign on the icon, which can go ignored.
 I have seen many occasions where a user has built up emails in their outbox throughout the day and not even noticed they havent been getting messages, and theirs haven't been being delivered.
 They carry on working oblivious to their lack of productivity.
 
-The Solution:
+The Solution
 -------------
 A Simple .net 4.8 executbale which upon running checks if Outlook is running for the user, if not it closes and does nothing.
 If so it checks if Outlook is working in offline mode, or has connectivity problems to M365 (or your own EWS service).
