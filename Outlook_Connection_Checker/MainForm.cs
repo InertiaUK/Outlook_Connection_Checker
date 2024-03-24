@@ -3,6 +3,7 @@ using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using OutlookApp = Microsoft.Office.Interop.Outlook.Application; // Alias for Outlook Application
 
@@ -17,10 +18,21 @@ namespace Outlook_Connection_Checker
             this.Load += MainForm_Load;
         }
 
+       
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsIconic(IntPtr hWnd);
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             Console.WriteLine("Checking Outlook connection...");
             CheckOutlookConnection();
+            
+
         }
 
         private void CheckOutlookConnection()
@@ -64,33 +76,43 @@ namespace Outlook_Connection_Checker
                     {
                         //  Debug.WriteLine("Outlook is connected to Microsoft 365.");
                         //we don't need to do anything if outlook is connected fine
-                        //MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                        IntPtr outlookHandle = FindWindow("rctrl_renwnd32", null);
+                       // Only if outlook is a foreground process.
+                        if (outlookHandle != IntPtr.Zero)
+                        {
+                        // MessageBox.Show("Outlook is connected to Microsoft 365.", "Outlook Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
                         // Check if there are 5 or more items in the Outbox
                         int outboxItemCount = GetOutboxItemCount(outlookApp);
                         if (outboxItemCount >= 5)
+                            
                         {
-                            // Set up a timer to check the Outbox again after 4 minutes
-                            Timer timer = new Timer();
-                            timer.Interval = 240000; // 4 minutes
-                            timer.Tick += (sender, e) =>
+                            //Sleep for 4 minutes
+                                Thread.Sleep(240000);
+
+
                             {
                                 int secondCheckItemCount = GetOutboxItemCount(outlookApp);
                                 if (secondCheckItemCount >= 5)
                                 {
-                                    // Show warning about too many items in the Outbox after 2 minutes
-                                    ShowDisconnectedWarning($"There are  {secondCheckItemCount} items stuck in your Outbox after 4+ minutes. \n\nOutlook may be having problems sending messages.");
-                                }
-                                timer.Stop(); // Stop the timer after the second check
+                                    outlookHandle = FindWindow("rctrl_renwnd32", null);
+                                    // Only if outlook is a foreground process.
+                                    if (outlookHandle != IntPtr.Zero)
+                                    {
+                                        // Show warning about too many items in the Outbox after 4 minutes
+                                        ShowDisconnectedWarning($"There are  {secondCheckItemCount} items stuck in your Outbox after 4+ minutes. \n\nOutlook may be having problems sending messages.");
+                                    }
+                                    }
+                               
                             };
-                            timer.Start(); // Start the timer
+                           
                         }
                     }
                 }
                 catch (COMException ex)
                 {
                    // Debug.WriteLine($"Failed to retrieve Outlook information. Error: {ex.Message}");
-                    ShowDisconnectedWarning($"Failed to retrieve Outlook information. Error: {ex.Message} \n\nPlease confirm your outlook is connected and working!\n\nContact your system administrator if you arent sure");
+                   // ShowDisconnectedWarning($"Failed to retrieve Outlook information. Error: {ex.Message} \n\nPlease confirm your outlook is connected and working!\n\nContact your system administrator if you arent sure");
                 }
                 finally
                 {
