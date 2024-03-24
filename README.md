@@ -1,10 +1,6 @@
 Outlook_Connection_Checker
 --------------------------
-v1.0.0 - Initial Release
 
-v1.0.1 - Fixes to check methods to make it work in cached and none cached mode.
-
-v1.0.2 - Added 'Clogged outbox' check
 
 The Problem
 ------------
@@ -34,3 +30,15 @@ To Do
 
 Create a config file so that features can be enabled/disabled, and time between outbox check and threshold can be configured. 
 Encorporate the age of the messages in the outbox to the check, rather than the number of messages.  
+
+Changelog
+---------
+v1.0.0 - Initial Release
+
+v1.0.1 - Fixes to check methods to make it work in cached and none cached mode.
+
+v1.0.2 - Added 'Clogged outbox' check
+
+v1.0.3 - Fixed a Timing Bug on the outbox clogged feature.
+       - Fixed a Bug to stop throwing communication errors if the Outlook process is running with no window.
+
